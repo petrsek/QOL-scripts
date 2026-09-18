@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo "Installation of Inhibit Sleep started";
+
+TARGET_DESK="$HOME/.local/share/applications/inhibit-sleep.desktop";
+
+ORIGIN_ICON="$PWD/inhibit-sleep-512x512.svg"
+TARGET_ICON="$HOME/.local/share/icons/inhibit-sleep-512x512.svg"
+
+# Create app .desktop file (since it is a single line script, the app is the .desktop file itself)
+cat > $TARGET_DESK << EOF
+[Desktop Entry]
+Type=Application
+Name=Inhibit Sleep
+Exec=sudo systemd-inhibit --what=handle-lid-switch:idle:sleep --who="Inhibit Sleep"  --why="User wants to halt automatic suspend" sh -c 'echo "Suspend inhabited. Press Control+C or close the terminal to stop" && tail -f /dev/null'
+Icon=$HOME/.local/share/icons/inhibit-sleep-512x512.svg
+Categories=Utility;
+Terminal=true
+EOF
+
+# Copy icon
+cp $ORIGIN_ICON $TARGET_ICON
+
+echo "Finished";

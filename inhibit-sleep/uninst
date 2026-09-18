@@ -1,0 +1,4 @@
+#!/bin/bash
+
+rm $HOME/.local/share/icons/inhibit-sleep-512x512.svg
+rm $HOME/.local/share/applications/inhibit-sleep.desktop
