@@ -1,0 +1,4 @@
+#!/bin/bash
+
+systemd-inhibit --what=handle-lid-switch:idle:sleep --who="Inhibit Sleep"  --why="User wants to halt automatic suspend" sh -c 'echo "Suspend inhabited. Press Control+C or close the terminal to stop" && tail -f /dev/null'
+

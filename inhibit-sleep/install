@@ -1,42 +1,63 @@
 #!/bin/bash
 
-no_sudo=''
-verbose=''
-while getopts 'vs' flag; do
+sudo_flag=''
+verbose_flag=''
+desktop_flag=''
+while getopts 'vsd' flag; do
 	case $flag in
-		'v') verbose=true ;;
-		's') no_sudo=true ;;
+		'v') verbose_flag=true ;;
+		's') sudo_flag=true ;;
+		'd') desktop_flag=true;;
 	esac
 done
 
-if [ $no_sudo ]; then sudo=''; 
-else sudo=sudo;
+if [ $sudo_flag ]; then sudo=sudo; 
+else sudo='';
 fi
 
 echo "Installation of Inhibit Sleep started";
 
-target_desk="$HOME/.local/share/applications/inhibit-sleep.desktop";
+target_desk_dir="$HOME/.local/share/applications"
+target_desk="$target_desk_dir/inhibit-sleep.desktop";
+
+origin_bin="$PWD/inhibit-sleep"
+target_bin_dir="$HOME/.local/share/bin"
+target_bin="$target_bin_dir/inhibit-sleep"
 
 origin_icon="$PWD/inhibit-sleep-512x512.svg"
-target_icon="$HOME/.local/share/icons/inhibit-sleep-512x512.svg"
+target_icon_dir="$HOME/.local/share/icons"
+target_icon="$target_icon_dir/inhibit-sleep-512x512.svg"
 
-# Create app .desktop file (since it is a single line script, the app is the .desktop file itself)
-if [ $verbose ]; then echo "Creating application shortcut in $target_desk"; fi
-cat > $target_desk << EOF
+# Copy script to bin
+if [ $verbose_flag ]; then echo "Creating folder $target_bin"; fi
+mkdir -p $target_bin_dir
+if [ $verbose_flag ]; then echo "Copying inhibit_sleep to $target_bin"; fi
+cp --preserve=mode $origin_bin $target_bin
+if [ $verbose_flag ]; then echo "DONE"; fi
+
+if [ $desktop_flag ]; then
+	# Create app shortcut
+	if [ $verbose_flag ]; then echo "Creating $target_desk_dir"; fi
+	mkdir -p $target_desk_dir
+	if [ $verbose_flag ]; then echo "Creating application shortcut in $target_desk_dir"; fi
+	cat > $target_desk << EOF
 [Desktop Entry]
 Type=Application
 Name=Inhibit Sleep
-Exec=$sudo systemd-inhibit --what=handle-lid-switch:idle:sleep --who="Inhibit Sleep"  --why="User wants to halt automatic suspend" sh -c 'echo "Suspend inhabited. Press Control+C or close the terminal to stop" && tail -f /dev/null'
+Exec=$sudo $target_bin
 Icon=$HOME/.local/share/icons/inhibit-sleep-512x512.svg
 Categories=Utility;
 Terminal=true
 EOF
-
-if [ $verbose ]; then echo "DONE"; fi
-
-# Copy icon
-if [ $verbose ]; then echo "Copying app icon to $target_icon"; fi
-cp $origin_icon $target_icon
-if [ $verbose ]; then echo "DONE"; fi
+	
+	if [ $verbose_flag ]; then echo "DONE"; fi
+	
+	# Copy icon
+	if [ $verbose_flag ]; then echo "Creating $target_icon_dir"; fi
+	mkdir -p $target_icon_dir
+	if [ $verbose_flag ]; then echo "Copying app icon to $target_icon_dir"; fi
+	cp $origin_icon $target_icon
+	if [ $verbose_flag ]; then echo "DONE"; fi
+fi
 
 echo "Instalation finished";
