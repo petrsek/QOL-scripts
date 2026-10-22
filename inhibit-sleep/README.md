@@ -6,8 +6,8 @@ The app normally runs with sudo and prompts for password on each start. This is 
 
 ## Install
 
-To install this app, run "install.sh". There are optional flags:
+To install this app, run "install" from this folder. There are optional flags:
 - -v Give more detailed info about the installation process
 - -s When this flag is given, the program will run WITHOUT sudo.
 
-To uninstall, run "uninst.sh"
+To uninstall, run "uninst" from this folder.
