@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Installing..."
+
+cd ./inhibit-sleep/
+bash ./uninst
+cd ..
+
+echo "Finished."
