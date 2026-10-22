@@ -6,7 +6,7 @@ The app normally runs with sudo and prompts for password on each start. This is 
 
 ## Install
 
-To install this app, run "instal.sh". There are optional flags:
+To install this app, run "install.sh". There are optional flags:
 - -v Give more detailed info about the installation process
 - -s When this flag is given, the program will run WITHOUT sudo.
 
