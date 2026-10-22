@@ -1,8 +1,17 @@
 #!/bin/bash
 
+no_sudo=''
 verbose=''
-getopts 'v' verb_flag;
-if test $verb_flag = "v"; then verbose='true'; fi
+while getopts 'vs' flag; do
+	case $flag in
+		'v') verbose=true ;;
+		's') no_sudo=true ;;
+	esac
+done
+
+if [ $no_sudo ]; then sudo=''; 
+else sudo=sudo;
+fi
 
 echo "Installation of Inhibit Sleep started";
 
@@ -17,7 +26,7 @@ cat > $target_desk << EOF
 [Desktop Entry]
 Type=Application
 Name=Inhibit Sleep
-Exec=sudo systemd-inhibit --what=handle-lid-switch:idle:sleep --who="Inhibit Sleep"  --why="User wants to halt automatic suspend" sh -c 'echo "Suspend inhabited. Press Control+C or close the terminal to stop" && tail -f /dev/null'
+Exec=$sudo systemd-inhibit --what=handle-lid-switch:idle:sleep --who="Inhibit Sleep"  --why="User wants to halt automatic suspend" sh -c 'echo "Suspend inhabited. Press Control+C or close the terminal to stop" && tail -f /dev/null'
 Icon=$HOME/.local/share/icons/inhibit-sleep-512x512.svg
 Categories=Utility;
 Terminal=true

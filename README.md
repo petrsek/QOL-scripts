@@ -1,7 +1,7 @@
 # QOL-scripts
 Quality of life scripts is a repository of random scripts and small apps I made to make my everyday life easier. 
 
-System specific scripts are created for Linux (Pop!_OS).
+System specific scripts are usually created for Linux (Pop!_OS).
 
 ## Installation
 
